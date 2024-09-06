@@ -85,9 +85,9 @@ def chatbot(user_symptoms_input=None):
     if not user_symptoms_input:  # Only print if it's a chatbot interaction
         print(f"\nBased on the symptoms you provided, the most likely condition is: {predicted_disease}.")
         print(f"Suggested Ayurvedic remedy: {suggested_remedy}")
-        print("\nOther possible conditions include:")
+        '''print("\nOther possible conditions include:")
         for disease in top_diseases[1:]:
-            print(f"- {disease} (probability: {probabilities[top_indices[top_diseases.tolist().index(disease)]]:.2f})")
+            print(f"- {disease} (probability: {probabilities[top_indices[top_diseases.tolist().index(disease)]]:.2f})")'''
 
     return predicted_disease, suggested_remedy
 
