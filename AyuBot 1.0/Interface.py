@@ -1,7 +1,9 @@
 import sys
+import re
+import cohere
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit
 from PyQt5.QtCore import Qt
-import cohere
+from PyQt5.QtGui import QTextCursor
 
 # Replace with your Cohere API key
 API_KEY = 'KTn7ndyWTyFbx9yGwzrS27JYOy0TRjttcObYzk5t'
@@ -9,8 +11,17 @@ API_KEY = 'KTn7ndyWTyFbx9yGwzrS27JYOy0TRjttcObYzk5t'
 # Initialize the Cohere client
 co = cohere.Client(API_KEY)
 
-# List of keywords related to herbal medicine and symptoms (used for checking domain relevance)
-HERBAL_KEYWORDS = ['herb', 'plant', 'symptom', 'disease', 'treatment', 'remedy', 'medicine', 'condition', 'health', 'wellness', 'ayurveda', 'fatigue', 'pain', 'nausea', 'infection', 'migraine', 'cold', 'fever']
+# A large list of keywords related to herbal medicine, symptoms, conditions, and treatments
+HERBAL_KEYWORDS = [
+    'herb', 'plant', 'ayurveda', 'symptom', 'disease', 'treatment', 'remedy', 'medicine',
+    'condition', 'health', 'wellness', 'fatigue', 'pain', 'nausea', 'infection', 'migraine',
+    'cold', 'fever', 'headache', 'cough', 'sore throat', 'diarrhea', 'vomiting', 'allergy',
+    'anxiety', 'depression', 'arthritis', 'asthma', 'back pain', 'bloating', 'bronchitis',
+    'burns', 'constipation', 'cramps', 'dizziness', 'eczema', 'indigestion', 'insomnia',
+    'irritable bowel syndrome', 'muscle pain', 'psoriasis', 'rashes', 'sinusitis', 'stress',
+    'stomach ache', 'toothache', 'urinary tract infection', 'vertigo', 'wound', 'yeast infection'
+    # (Add more keywords as needed)
+]
 
 # Function to check if the input is relevant to the domain
 def is_in_domain(user_input):
@@ -29,6 +40,12 @@ def get_ai_response(prompt):
     except Exception as e:
         return f"An error occurred: {e}"
 
+# Function to clean and format the user's input
+def clean_input(user_input):
+    # Remove any extra spaces, special characters, and lowercase the input
+    user_input = re.sub(r'[^a-zA-Z, ]', '', user_input).lower().strip()
+    return user_input
+
 # PyQt5 Interface for the Chatbot
 class HerbalAssistant(QWidget):
     def __init__(self):
@@ -42,7 +59,7 @@ class HerbalAssistant(QWidget):
         layout = QVBoxLayout()
 
         # Instructions label
-        self.label = QLabel('Welcome to the Herbal Remedy Assistant. Enter symptoms (comma-separated) and press Submit:')
+        self.label = QLabel('Enter your symptoms (comma-separated), and I will suggest possible diseases and remedies:')
         layout.addWidget(self.label)
 
         # Text input for symptoms
@@ -58,6 +75,7 @@ class HerbalAssistant(QWidget):
         # Output field for the AI response
         self.output_field = QTextEdit(self)
         self.output_field.setReadOnly(True)
+        self.output_field.setTextInteractionFlags(Qt.TextSelectableByMouse)
         layout.addWidget(self.output_field)
 
         # Set the main layout
@@ -65,30 +83,40 @@ class HerbalAssistant(QWidget):
 
         # Window settings
         self.setWindowTitle('Herbal Remedy Assistant')
-        self.setGeometry(400, 200, 600, 400)
+        self.setGeometry(400, 200, 600, 500)
         self.show()
 
     def handle_input(self):
+        # Clean and process user input
         user_input = self.input_field.text().lower()
+        cleaned_input = clean_input(user_input)
 
-        # Check if input is within the herbal medicine domain
-        if not is_in_domain(user_input):
-            self.output_field.setText("The question seems to be out of scope. Please ask about symptoms, herbal treatments, or related health conditions.")
+        if not cleaned_input:
+            self.output_field.setHtml("<p style='color:red;'>Invalid input. Please enter your symptoms properly.</p>")
+            return
+
+        if not is_in_domain(cleaned_input):
+            self.output_field.setHtml("<p style='color:red;'>Out of scope. Please ask about symptoms, herbal treatments, or related health conditions.</p>")
+            return
+
+        user_symptoms = [symptom.strip() for symptom in cleaned_input.split(",")]
+
+        # Generate AI prompt
+        ai_prompt = f"""The user has the following symptoms: {', '.join(user_symptoms)}.
+        First, identify potential diseases or health conditions that may be associated with these symptoms.
+        Then, as an herbal medicine assistant, suggest plant-based herbal medicines or mixtures of herbs traditionally used in herbal or Ayurvedic treatments for these conditions.
+        Focus only on natural remedies using herbs and plants, and avoid recommending any pharmaceutical or synthetic treatments."""
+
+        # Get AI response
+        ai_response = get_ai_response(ai_prompt)
+
+        # Display AI response
+        if ai_response:
+            self.output_field.setHtml(f"<h2>Possible Diseases and Herbal Remedy Suggestions</h2><p>{ai_response}</p>")
         else:
-            # Process user symptoms input
-            user_symptoms = [symptom.strip() for symptom in user_input.split(",")]
+            self.output_field.setHtml("<p style='color:red;'>An error occurred. Please try again.</p>")
 
-            # Generate AI prompt
-            ai_prompt = f"""The user has the following symptoms: {', '.join(user_symptoms)}.
-            First, identify potential diseases or health conditions that may be associated with these symptoms.
-            Then, as an herbal medicine assistant, suggest plant-based herbal medicines or mixtures of herbs traditionally used in herbal or Ayurvedic treatments for these conditions.
-            Focus only on natural remedies using herbs and plants, and avoid recommending any pharmaceutical or synthetic treatments."""
-
-            # Get AI response
-            ai_response = get_ai_response(ai_prompt)
-            self.output_field.setText(f"Possible Diseases and Herbal Remedy Suggestions:\n\n{ai_response}")
-
-# Main application
+# Main function to run the PyQt5 app
 def run_app():
     app = QApplication(sys.argv)
     assistant = HerbalAssistant()
