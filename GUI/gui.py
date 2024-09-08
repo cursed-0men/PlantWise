@@ -68,7 +68,7 @@ title_label = tk.Label(
 )
 title_label.pack(pady=(30, 20))
 
-input_label = ttk.Label(frame, text="Enter your symptoms (comma-separated):")
+input_label = ttk.Label(frame, text="Enter your symptoms (eg: cough, fever, sore throat):")
 input_label.pack(pady=10)
 entry = ttk.Entry(frame, width=60)
 entry.pack(pady=5)
