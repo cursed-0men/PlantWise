@@ -1,7 +1,7 @@
 # 🌿 **PlantWise**  
 *Your Ayurvedic Health Companion for Disease Prediction and Natural Remedies*  
 
-<a href="https://sites.google.com/view/plantwise/vitrual-garden?authuser=0" target="_blank">Click Here to Explore the Garden</a>
+[Click Here to Explore the Garden](https://sites.google.com/view/plantwise/vitrual-garden?authuser=0)
 ---
 
 ## 🌟 **Overview**  
