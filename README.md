@@ -21,16 +21,16 @@
 
 # 🛠 **Project Components** 
 
-### `AyuBot.py`
+### *`AyuBot.py`*
 - **Integrates Cohere API** to generate accurate disease predictions and suggest Ayurvedic remedies.
 - **Processes symptom input**, connects with the AI model, and returns health-related insights.
 
-### `interface.py`
+### *`interface.py`*
 
 -   Built using **PyQt** to create an **interactive GUI**.
 -   **Handles user input**, processes symptom data, and displays the **AI-generated predictions and remedies**.
 
-### `dataset.csv`
+### *`dataset.csv`*
 
 -   A structured dataset containing **symptoms, diseases, and Ayurvedic remedies**, essential for model training and prediction.
 
