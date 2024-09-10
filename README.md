@@ -11,14 +11,11 @@
 
 # ✨ **Key Features** 
 
-- **🔍 Disease Prediction:**  
-   Leverages a **Cohere-powered AI** model to analyze symptoms and predict potential diseases, making healthcare advice more accessible.  
+- **🔍 Disease Prediction:**  Leverages a **Cohere-powered AI** model to analyze symptoms and predict potential diseases, making healthcare advice more accessible.  
 
-- **🌱 Ayurvedic Remedies:**  
-   Provides **natural, plant-based remedies** based on the predicted diseases using traditional Ayurvedic knowledge.
+- **🌱 Ayurvedic Remedies:**  Provides **natural, plant-based remedies** based on the predicted diseases using traditional Ayurvedic knowledge.
 
-- **💻 User-Friendly Interface:**  
-   Offers an **intuitive graphical interface** for symptom input and instant remedy suggestions using **PyQt**.
+- **💻 User-Friendly Interface:**  Offers an **intuitive graphical interface** for symptom input and instant remedy suggestions using **PyQt**.
 
 ---
 
