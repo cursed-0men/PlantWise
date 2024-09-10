@@ -4,12 +4,12 @@
 [Click Here to Explore the Garden](https://sites.google.com/view/plantwise/vitrual-garden?authuser=0)  
 ---
 
-## 🌟 **Overview** 
+# 🌟 **Overview** 
 **PlantWise** is an AI-powered tool that predicts diseases based on user symptoms and suggests **natural Ayurvedic remedies**. With its intuitive interface, users can easily input symptoms and receive both predictions and treatments rooted in traditional herbal medicine.
 
 ---
 
-## ✨ **Key Features** 
+# ✨ **Key Features** 
 
 - **🔍 Disease Prediction:**  
    Leverages a **Cohere-powered AI** model to analyze symptoms and predict potential diseases, making healthcare advice more accessible.  
@@ -22,7 +22,7 @@
 
 ---
 
-## 🛠 **Project Components** 
+# 🛠 **Project Components** 
 
 ### `AyuBot.py`
 - **Integrates Cohere API** to generate accurate disease predictions and suggest Ayurvedic remedies.
@@ -39,13 +39,13 @@
 
 ----------
 
-## 📡 **API Integration**
+# 📡 **API Integration**
 
 -   **Cohere API:** Utilized for generating predictions and suggesting remedies based on user symptoms. The API provides advanced language model capabilities to enhance the accuracy and relevance of health suggestions.
 -   **API Key:** To use the Cohere API, you'll need an API key. Replace the placeholder with your own API key in the `AyuBot.py` file. Here is the API key used for demonstration:
 ----------
 
-## 🧑‍💻 **How to Use**
+# 🧑‍💻 **How to Use**
 
 1.  **Enter symptoms** in the input field on the GUI.
 2.  Click the **"Submit"** button to get the **disease prediction**.
@@ -53,7 +53,7 @@
 
 ----------
 
-## 🚀 **Future Enhancements**
+# 🚀 **Future Enhancements**
 
 -   **Expand the dataset** to improve **prediction accuracy**.
 -   **Incorporate user feedback** for further refinement.
