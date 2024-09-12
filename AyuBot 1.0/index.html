@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herbal Remedy Assistant</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Global Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #61AA78; /* Subtle green-blue background */
+            color: #333;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container for the Form */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Form Heading */
+        h1 {
+            color: #00796b; /* Dark teal color for headings */
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+
+        /* Label */
+        label {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        /* Textarea for Symptoms */
+        textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 2px solid #ccc;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+            resize: none;
+        }
+
+        textarea:focus {
+            border-color: #00796b; /* Dark teal focus color */
+            outline: none;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 12px 25px;
+            background-color: #00796b; /* Dark teal button */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #004d40; /* Darker teal on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            font-size: 1.1em;
+            color: #00796b;
+            margin-top: 20px;
+        }
+
+        /* Response Box Styling */
+        .response {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e8f5e9; /* Light green background for response */
+            border-left: 5px solid #4caf50; /* Green accent on the side */
+            display: none;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .response strong {
+            font-size: 1.2em;
+            color: #00695c; /* Deep teal for strong tags */
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media only screen and (max-width: 768px) {
+            body { padding: 20px; }
+            h1 { font-size: 1.8em; }
+            button { width: 100%; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Herbal Remedy Assistant</h1>
+
+        <label for="symptoms">Enter your symptoms (comma-separated):</label>
+        <textarea id="symptoms" placeholder="e.g., headache, fatigue, cough"></textarea>
+
+        <button id="submit-btn">Get Remedy</button>
+        <div class="loading">Processing your symptoms...</div>
+
+        <div id="response" class="response"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#submit-btn').on('click', function() {
+                const symptoms = $('#symptoms').val().trim();
+
+                // Clear previous response and show loading
+                $('#response').hide();
+                $('.loading').show();
+
+                if (symptoms === '') {
+                    alert("Please enter symptoms.");
+                    $('.loading').hide();
+                    return;
+                }
+
+                // Send the symptoms to the Flask server
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/get_remedy',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ symptoms: symptoms }),
+                    success: function(response) {
+                        // Hide loading and show the response
+                        $('.loading').hide();
+                        $('#response').html(formatResponse(response.response)).fadeIn().addClass('fade-in');
+                    },
+                    error: function(err) {
+                        $('.loading').hide();
+                        alert("An error occurred. Please try again.");
+                    }
+                });
+            });
+
+            function formatResponse(rawText) {
+                // Convert the raw response text into a cleaner format
+                let formattedText = rawText.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                return formattedText;
+            }
+        });
+    </script>
+
+</body>
+</html>
