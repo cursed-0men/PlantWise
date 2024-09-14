@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import cohere
 import re
@@ -14,9 +14,9 @@ co = cohere.Client(API_KEY)
 def get_ai_response(prompt):
     try:
         response = co.generate(
-            model='command-xlarge-nightly',  # Use the appropriate model
+            model='command-xlarge-nightly',
             prompt=prompt,
-            max_tokens=250,  # Increased token count for disease and remedy suggestions
+            max_tokens=250,
             temperature=0.7
         )
         return response.generations[0].text.strip()
@@ -25,17 +25,21 @@ def get_ai_response(prompt):
 
 # Function to clean and format the user's input
 def clean_input(user_input):
-    # Remove any extra spaces, special characters, and lowercase the input
     user_input = re.sub(r'[^a-zA-Z, ]', '', user_input).lower().strip()
     return user_input
 
 # Function to remove markdown formatting
 def remove_markdown(text):
-    text = re.sub(r'\*\*', '', text)  # Remove bold markers
-    text = re.sub(r'[_]', '', text)   # Remove italic markers if any
-    text = re.sub(r'[`]', '', text)   # Remove inline code markers if any
-    text = re.sub(r'~', '', text)     # Remove strikethrough markers if any
+    text = re.sub(r'\*\*', '', text)
+    text = re.sub(r'[_]', '', text)
+    text = re.sub(r'[`]', '', text)
+    text = re.sub(r'~', '', text)
     return text
+
+# Serve the index.html from the templates folder
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 # API endpoint to receive symptoms and return herbal remedies
 @app.route('/get_remedy', methods=['POST'])
