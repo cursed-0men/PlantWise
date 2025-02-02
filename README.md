@@ -6,13 +6,13 @@
 
 # 🌟 **Overview** 
 **PlantWise** is an AI-powered tool that predicts diseases based on user symptoms and suggests **natural Ayurvedic remedies**. With its intuitive interface, users can easily input symptoms and receive both predictions and treatments rooted in traditional herbal medicine.
-### 1
+### 1 Home Page
 ![Home page](images/home.png)
 
-### 2
+### 2 Featured Page
 ![Featured](images/featured.png)
 
-### 3
+### 3 Virtual garden Page
 ![Virtual Garden](images/virtualgarden.png)
 
 
